@@ -8,14 +8,15 @@ const getDistLocation = (importName, opts) => {
   if (importName === 'index') {
     return `react-native-web/dist/${format}index`;
   }
+  // 处理没有实现的部分
+  if (importName && moduleMapExtend[importName]) {
+    return `react-native-web-extend/src/react-native-web/${importName}`;
+  }
+
   if (importName && moduleMap[importName]) {
     return `react-native-web/dist/${format}exports/${importName}`;
   }
 
-  // 处理没有实现的部分
-  if (importName && moduleMapExtend[importName]) {
-    return `react-native-web-extend/dist/${format}exports/${importName}`;
-  }
 
   return null;
 };
