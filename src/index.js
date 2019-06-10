@@ -1,22 +1,16 @@
-const moduleMap = require('./moduleMap');
-const moduleMapExtend = require('./moduleMapExtend');
+const moduleMap = require('./moduleMapExtend');
 
-const isCommonJS = opts => opts.commonjs === true;
+// const isCommonJS = opts => opts.commonjs === true;
 
 const getDistLocation = (importName, opts) => {
-  const format = isCommonJS(opts) ? 'cjs/' : '';
+  // const format = isCommonJS(opts) ? 'cjs/' : '';
   if (importName === 'index') {
-    return `react-native-web/dist/${format}index`;
+    return 'react-native-web-extend/src/react-native-web/index';
   }
   // 处理没有实现的部分
-  if (importName && moduleMapExtend[importName]) {
+  if (importName && moduleMap[importName]) {
     return `react-native-web-extend/src/react-native-web/${importName}`;
   }
-
-  if (importName && moduleMap[importName]) {
-    return `react-native-web/dist/${format}exports/${importName}`;
-  }
-
 
   return null;
 };
@@ -42,7 +36,7 @@ const isReactNativeModule = ({ source, specifiers }) =>
   (source.value === 'react-native' || source.value === 'react-native-web') &&
   specifiers.length;
 
-module.exports = function({ types: t }) {
+module.exports = function ({ types: t }) {
   return {
     name: 'Rewrite react-native to react-native-web',
     visitor: {
