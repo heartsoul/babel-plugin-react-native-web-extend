@@ -1,15 +1,20 @@
-const moduleMap = require('./moduleMapExtend');
-
-// const isCommonJS = opts => opts.commonjs === true;
+const moduleMap = require('./moduleMap');
+const moduleMapExtend = require('./moduleMapExtend');
+const isCommonJS = opts => opts.commonjs === true;
 
 const getDistLocation = (importName, opts) => {
-  // const format = isCommonJS(opts) ? 'cjs/' : '';
+  const format = isCommonJS(opts) ? 'cjs/' : '';
   if (importName === 'index') {
     return 'react-native-web-extend/src/react-native-web/index';
   }
   // 处理没有实现的部分
-  if (importName && moduleMap[importName]) {
+  if (importName && moduleMapExtend[importName]) {
     return `react-native-web-extend/src/react-native-web/${importName}`;
+  }
+
+   // 处理没有实现的部分
+   if (importName && moduleMap[importName]) {
+    return `react-native-web/dist/${format}exports/${importName}`;
   }
 
   return null;
